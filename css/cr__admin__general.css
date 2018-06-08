@@ -1,0 +1,52 @@
+
+/********************************/
+/*                              */
+/*            GENERAL           */
+/*             START            */
+/*                              */
+/********************************/
+
+/*
+body.path-admin .region-content #block-seven-content{
+  display: inline-block;
+  width: 600px;
+}
+body.path-admin .region-content #block-calculate-your-route{
+  display: inline-block;
+  width: calc(100% - 650px)!important;
+  margin-left: 40px;
+  min-width: 600px;
+}
+*/
+
+/********************************/
+/*                              */
+/*            GENERAL           */
+/*              END             */
+/*                              */
+/********************************/
+
+#block-seven-content{
+	width:650px;
+	margin-right:50px;
+}
+#block-seven-content,
+#block-calculate-your-route{
+	display: inline-block;
+	vertical-align: top;
+}
+
+
+.enable-element .fa{
+	margin-right:12px;
+}
+.enable-element .fa-check{
+	color:green;
+}
+.enable-element .fa-close{
+	color:red;
+}
+
+.enable-element em{
+  text-transform: capitalize;
+}

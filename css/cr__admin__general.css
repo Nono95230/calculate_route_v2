@@ -50,3 +50,46 @@ body.path-admin .region-content #block-calculate-your-route{
 .enable-element em{
   text-transform: capitalize;
 }
+
+
+/********************************/
+/*                              */
+/*          FIELD GROUP         */
+/*             START            */
+/*                              */
+/********************************/
+
+/* fieldset.fieldgroup{
+}
+fieldset.fieldgroup legend span.fieldset-legend{
+} */
+
+fieldset.fieldgroup .fieldset-wrapper > *{
+	display: inline-block;
+}
+fieldset.fieldgroup .fieldset-wrapper > * > *{
+	height: 31px;
+}
+fieldset.fieldgroup .fieldset-wrapper > *:first-child{
+	margin-right:-5px;
+}
+fieldset.fieldgroup .fieldset-wrapper > *:first-child > input.form-text{
+	text-align: right;
+}
+fieldset.fieldgroup .fieldset-wrapper > *:last-child > select.form-select{
+	background-color: #e9ecef;
+	background-color: #6c757d;
+	color: white;
+	box-shadow: none;
+	border: 1px solid rgb(184, 184, 184);
+   -webkit-appearance: none; 
+   -moz-appearance: none;
+   appearance: none;
+}
+
+/********************************/
+/*                              */
+/*          FIELD GROUP         */
+/*              END             */
+/*                              */
+/********************************/

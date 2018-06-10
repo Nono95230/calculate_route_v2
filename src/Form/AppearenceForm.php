@@ -18,10 +18,12 @@ class AppearenceForm extends ConfigFormBase {
 
   protected $entityTM;
   protected $configCr;
+  protected $unity;
 
   public function __construct(EntityTypeManagerInterface $entityTypeManager, ConfigFactory $config){
-    $this->entityTM  = $entityTypeManager;
-    $this->configCr  = $config->getEditable("calculate_route.config");
+    $this->entityTM   = $entityTypeManager;
+    $this->configCr   = $config->getEditable("calculate_route.config");
+    $this->unity      = $this->setUnity($this->configCr->get('config.unity_position'));
   }
 
   public static function create(ContainerInterface $container){
@@ -90,77 +92,177 @@ class AppearenceForm extends ConfigFormBase {
       '#group' => 'settings_appearence',
     );
 
-    $form['dimension-map']['width_map'] = array(
-      '#type' => 'textfield',
+    $form['dimension-map']['width'] = array(
+      '#type' => 'fieldgroup',
       '#title' => $this->t('Width'),
-      '#size' => 15,
+    );
+
+    $form['dimension-map']['width']['width_map'] = array(
+      '#type' => 'textfield',
+      '#size' => 3,
       '#attributes' => array(
           'data-property' => 'width',
           'data-selector' => '#container_map',
           'data-jquery-method' => 'css'
       ),
-      '#default_value' => $this->configCr->get('appearence.width_map')
+      '#default_value' => $this->getMesure($this->configCr->get('appearence.width_map'))
     );
 
-    $form['dimension-map']['height_map'] = array(
-      '#type' => 'textfield',
+    $form['dimension-map']['width']['width_map_unity'] = [
+      '#type' => 'select',
+      '#options' => $this->removeUnity($this->unity, 'auto'),
+      '#default_value' => $this->getUnity($this->configCr->get('appearence.width_map'))
+    ];
+
+    $form['dimension-map']['height'] = array(
+      '#type' => 'fieldgroup',
       '#title' => $this->t('Height'),
-      '#size' => 15,
+    );
+
+    $form['dimension-map']['height']['height_map'] = array(
+      '#type' => 'textfield',
+      '#size' => 3,
       '#attributes' => array(
           'data-property' => 'height',
           'data-selector' => '#container_map',
           'data-jquery-method' => 'css'
       ),
-      '#default_value' => $this->configCr->get('appearence.height_map')
+      '#default_value' => $this->getMesure($this->configCr->get('appearence.width_map'))
     );
 
-    $form['form-position']['top_position'] = array(
-      '#type' => 'textfield',
+    $form['dimension-map']['height']['height_map_unity'] = [
+      '#type' => 'select',
+      '#options' => $this->removeUnity($this->unity, 'auto'),
+      '#default_value' => $this->getUnity($this->configCr->get('appearence.height_map'))
+    ];
+
+    $form['form-position']['top'] = array(
+      '#type' => 'fieldgroup',
       '#title' => $this->t('Top position'),
-      '#size' => 15,
+    );
+
+    $form['form-position']['top']['top_position'] = array(
+      '#type' => 'textfield',
+      '#size' => 3,
       '#attributes' => array(
           'data-property' => 'top',
           'data-selector' => '#container_form',
           'data-jquery-method' => 'css'
       ),
-      '#default_value' => $this->configCr->get('appearence.top_position')
+      '#states' => array(
+        'invisible' => array(
+          'select[name="top_position_unity"]' => array('value' => "auto")
+        ),
+      ),
+      '#default_value' => $this->getMesure($this->configCr->get('appearence.top_position'))
     );
 
-    $form['form-position']['bottom_position'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Bottom position'),
-      '#size' => 15,
-      '#attributes' => array(
-          'data-property' => 'bottom',
-          'data-selector' => '#container_form',
-          'data-jquery-method' => 'css'
-      ),
-      '#default_value' => $this->configCr->get('appearence.bottom_position')
-    );
+    $form['form-position']['top']['top_position_unity'] = [
+      '#type' => 'select',
+      '#options' => $this->unity,
+      '#default_value' => $this->getUnity($this->configCr->get('appearence.top_position'))
+    ];
 
-    $form['form-position']['left_position'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Left position'),
-      '#size' => 15,
-      '#attributes' => array(
-          'data-property' => 'left',
-          'data-selector' => '#container_form',
-          'data-jquery-method' => 'css'
-      ),
-      '#default_value' => $this->configCr->get('appearence.left_position')
-    );
 
-    $form['form-position']['right_position'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Right position'),
-      '#size' => 15,
-      '#attributes' => array(
-          'data-property' => 'right',
-          'data-selector' => '#container_form',
-          'data-jquery-method' => 'css'
-      ),
-      '#default_value' => $this->configCr->get('appearence.right_position')
-    );
+
+
+
+
+
+$form['form-position']['bottom'] = array(
+  '#type' => 'fieldgroup',
+  '#title' => $this->t('Bottom position'),
+);
+
+$form['form-position']['bottom']['bottom_position'] = array(
+  '#type' => 'textfield',
+  '#size' => 3,
+  '#attributes' => array(
+      'data-property' => 'bottom',
+      'data-selector' => '#container_form',
+      'data-jquery-method' => 'css'
+  ),
+  '#states' => array(
+    'invisible' => array(
+      'select[name="bottom_position_unity"]' => array('value' => "auto")
+    ),
+  ),
+  '#default_value' => $this->getMesure($this->configCr->get('appearence.bottom_position'))
+);
+
+$form['form-position']['bottom']['bottom_position_unity'] = [
+  '#type' => 'select',
+  '#options' => $this->unity,
+  '#default_value' => $this->getUnity($this->configCr->get('appearence.bottom_position'))
+];
+
+
+
+
+$form['form-position']['left'] = array(
+  '#type' => 'fieldgroup',
+  '#title' => $this->t('Left position'),
+);
+
+$form['form-position']['left']['left_position'] = array(
+  '#type' => 'textfield',
+  '#size' => 3,
+  '#attributes' => array(
+      'data-property' => 'left',
+      'data-selector' => '#container_form',
+      'data-jquery-method' => 'css'
+  ),
+  '#states' => array(
+    'invisible' => array(
+      'select[name="left_position_unity"]' => array('value' => "auto")
+    ),
+  ),
+  '#default_value' => $this->getMesure($this->configCr->get('appearence.left_position'))
+);
+
+$form['form-position']['left']['left_position_unity'] = [
+  '#type' => 'select',
+  '#options' => $this->unity,
+  '#default_value' => $this->getUnity($this->configCr->get('appearence.left_position'))
+];
+
+
+
+
+
+$form['form-position']['right'] = array(
+  '#type' => 'fieldgroup',
+  '#title' => $this->t('Right position'),
+);
+
+$form['form-position']['right']['right_position'] = array(
+  '#type' => 'textfield',
+  '#size' => 3,
+  '#attributes' => array(
+      'data-property' => 'right',
+      'data-selector' => '#container_form',
+      'data-jquery-method' => 'css'
+  ),
+  '#states' => array(
+    'invisible' => array(
+      'select[name="right_position_unity"]' => array('value' => "auto")
+    ),
+  ),
+  '#default_value' => $this->getMesure($this->configCr->get('appearence.right_position'))
+);
+
+$form['form-position']['right']['right_position_unity'] = [
+  '#type' => 'select',
+  '#options' => $this->unity,
+  '#default_value' => $this->getUnity($this->configCr->get('appearence.right_position'))
+];
+
+
+
+
+
+
+
 
 
     $form['form-color-text']['label_text_color'] = array(
@@ -259,8 +361,12 @@ class AppearenceForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
     $this->configCr
-      ->set( 'appearence.width_map', $form_state->getValue('width_map') )
-      ->set( 'appearence.height_map', $form_state->getValue('height_map') )
+      ->set( 'appearence.width_map', $this->setMesure($form_state, 'width_map') )
+      ->set( 'appearence.height_map', $this->setMesure($form_state, 'height_map') )
+      ->set( 'appearence.top_position', $this->setMesure($form_state, 'top_position') )
+      ->set( 'appearence.bottom_position', $this->setMesure($form_state, 'bottom_position') )
+      ->set( 'appearence.left_position', $this->setMesure($form_state, 'left_position')) 
+      ->set( 'appearence.right_position', $this->setMesure($form_state, 'right_position') )
       ->set( 'appearence.label_text_color', $form_state->getValue('label_text_color') )
 /*      ->set( 'appearence.button_text_color', $form_state->getValue('button_text_color') )*/
       ->set( 'appearence.header_color', $form_state->getValue('head_color') )
@@ -268,10 +374,6 @@ class AppearenceForm extends ConfigFormBase {
       ->set( 'appearence.button_color', $form_state->getValue('button_color') )
       ->set( 'appearence.three_btn_color', $form_state->getValue('three_btn_color') )
       ->set( 'appearence.three_btn_hover_color', $form_state->getValue('three_btn_hover_color') )
-      ->set( 'appearence.top_position', $form_state->getValue('top_position') )
-      ->set( 'appearence.bottom_position', $form_state->getValue('bottom_position') )
-      ->set( 'appearence.left_position', $form_state->getValue('left_position') )
-      ->set( 'appearence.right_position', $form_state->getValue('right_position') )
       ->save();
 
     $this->entityTM->getViewBuilder('block')->resetCache();
@@ -279,5 +381,64 @@ class AppearenceForm extends ConfigFormBase {
     parent::submitForm($form, $form_state);
 
   }
+
+  public function setUnity($unities){
+    $newArray = [];
+    foreach ($unities as $unity) {
+      $newArray[$unity] = $unity;
+    }
+    return $newArray;
+  }
+
+  public function removeUnity($array, $remove){
+    unset($array[$remove]);
+    return $array;
+  }
+
+  public function getMesure($mesure){
+    $unities = $this->configCr->get('config.unity_position');
+    foreach ($unities as $unity) {
+      if( strpos($mesure, $unity) ){
+        return str_replace($unity, "", $mesure);
+      }
+    }
+  }
+
+  public function getUnity($mesure){
+    $unities = $this->configCr->get('config.unity_position');
+    foreach ($unities as $unity) {
+      if( strpos($mesure, $unity) ){
+        return  $unity;
+      }
+    }
+  }
+
+  public function setMesure($form_state, $inputName){
+
+    $mesure = $form_state->getValue($inputName);
+    $unity = $form_state->getValue($inputName.'_unity');
+
+    switch ($unity) {
+      case 'auto':
+        $response = $unity;
+        break;
+      default:
+        $response = $mesure.$unity;
+        break;
+    }
+
+    return $response;
+
+  }
+
+
+
+
+
+
+
+
+
+
 
 }

@@ -23,11 +23,17 @@
 
 				var inputSettings = [
 					'#edit-width-map',
+					'#edit-width-map-unity',
 					'#edit-height-map',
+					'#edit-height-map-unity',
 					'#edit-top-position',
+					'#edit-top-position-unity',
 					'#edit-bottom-position',
+					'#edit-bottom-position-unity',
 					'#edit-left-position',
+					'#edit-left-position-unity',
 					'#edit-right-position',
+					'#edit-right-position-unity',
 					'#edit-label-text-color--2',
 					'#edit-button-text-color--2',
 					'#edit-head-color--2',
@@ -61,8 +67,8 @@
 				function getSettings(element){
 
 						var selector = element.data('selector'),
-							property = element.data('property'),
-							value 	 = '';
+								property = element.data('property'),
+								value 	 = '';
 
 						switch (property) {
 							case 'color':
@@ -80,8 +86,37 @@
 								break;
 
 							default:
-								value = element.val();
-								break;
+								var issetUnity 		= '-unity',
+										selectorValue = '',
+										selectorUnity = '',
+										elementValue 	= '',
+										elementUnity 	= '';
+
+								if ( element.attr('id').indexOf(issetUnity) >= 0 ) {
+									selectorValue = $('#'+element.attr('id').replace(issetUnity, '') );
+									selectorUnity = element;
+
+									elementUnity 	= selectorUnity.val();
+								}
+								else {
+									selectorValue = element;
+									selectorUnity = $('#'+element.attr('id')+issetUnity);
+
+									if ( selectorUnity.length ) {
+										elementUnity = selectorUnity.val();
+									}
+								}
+								if ( 'auto' == elementUnity && selectorUnity.attr('id').indexOf('position') >= 0 ) {
+									elementValue = '';
+								}
+								else{
+									if (selectorValue.val() == '') {
+										selectorValue.val('0');
+									}
+									elementValue = selectorValue.val();
+								}
+
+								value = elementValue + elementUnity;
 						}
 						// console.log(selector);
 						// console.log(property);

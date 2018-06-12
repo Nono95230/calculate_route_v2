@@ -53,24 +53,12 @@ class FormForm extends ConfigFormBase {
 
     $form['settings_form'] = array(
       '#type' => 'vertical_tabs',
-      '#default_tab' => 'edit-enable-element',
+      '#default_tab' => 'edit-address-destination',
       '#attached' => array(
         'library' => array(
           'calculate_route/form_v-tabs'
         )
       )
-    );
-
-    $form['enable-element'] = array(
-      '#type'           => 'details',
-      '#title'          => $this->t('Enable Element'),
-      '#group' => 'settings_form',
-    );
-
-    $form['label-address'] = array(
-      '#type'           => 'details',
-      '#title'          => $this->t('Label address'),
-      '#group' => 'settings_form',
     );
 
 
@@ -81,10 +69,47 @@ class FormForm extends ConfigFormBase {
     );
 
 
+    $form['enable-element'] = array(
+      '#type'           => 'details',
+      '#title'          => $this->t('Enable Element'),
+      '#group' => 'settings_form',
+    );
+
+
+    $form['label-address'] = array(
+      '#type'           => 'details',
+      '#title'          => $this->t('Label address'),
+      '#group' => 'settings_form',
+    );
+
+
     $form['other-texts'] = array(
       '#type'           => 'details',
       '#title'          => $this->t('Other Texts'),
       '#group' => 'settings_form',
+    );
+
+
+    $form['address-destination']['title'] = array(
+      '#type'           => 'textfield',
+      '#title'          => $this->t('Address title'),
+      '#size'           => 20,
+      '#attributes' => array(
+          'data-property' => 'html',
+          'data-selector' => '#title'
+      ),
+      '#default_value'  => $this->configCr->get('form.title_address')
+    );
+
+
+    $form['address-destination']['address'] = array(
+      '#type'           => 'textfield',
+      '#title'          => $this->t('Address'),
+      '#attributes' => array(
+          'data-property' => 'val',
+          'data-selector' => '#title'
+      ),
+      '#default_value'  => $this->configCr->get('form.address_destination')
     );
 
 
@@ -115,6 +140,7 @@ class FormForm extends ConfigFormBase {
       '#default_value'  => $this->configCr->get('form.btn_switch')
     );
 
+
     $form['enable-element']['btn_minimize_restore'] = array(
       '#type'           => 'checkbox',
       '#title'          => $this->t('Enable minimize/restore form button'),
@@ -124,8 +150,6 @@ class FormForm extends ConfigFormBase {
       ),
       '#default_value'  => $this->configCr->get('form.btn_minimize_restore')
     );
-
-
 
 
     $form['label-address']['sl_start'] = array(
@@ -179,29 +203,6 @@ class FormForm extends ConfigFormBase {
           'data-selector' => '#label_end'
       ),
       '#default_value'  => $this->configCr->get('form.ct_end')
-    );
-
-
-    $form['address-destination']['title'] = array(
-      '#type'           => 'textfield',
-      '#title'          => $this->t('Address title'),
-      '#size'           => 20,
-      '#attributes' => array(
-          'data-property' => 'html',
-          'data-selector' => '#title'
-      ),
-      '#default_value'  => $this->configCr->get('form.title_address')
-    );
-
-
-    $form['address-destination']['address'] = array(
-      '#type'           => 'textfield',
-      '#title'          => $this->t('Address'),
-      '#attributes' => array(
-          'data-property' => 'val',
-          'data-selector' => '#title'
-      ),
-      '#default_value'  => $this->configCr->get('form.address_destination')
     );
 
 
